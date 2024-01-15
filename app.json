@@ -24,10 +24,17 @@
       },
       "permissions": [
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "com.muhanguzi.joshtecsai"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "72333bcf-b1e0-4d81-88c9-60ee4f3f790f"
+      }
+    },
+    "owner": "muhanguzi"
   }
 }

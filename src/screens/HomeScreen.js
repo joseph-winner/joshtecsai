@@ -1,7 +1,7 @@
+import Voice from '@react-native-community/voice';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Voice from '@react-native-community/voice';
 import Features from '../components/Features'
 import { dummyMessages } from '../constants/Index'
 
@@ -9,26 +9,52 @@ const HomeScreen = () => {
     const [messages, setMessages] = useState(dummyMessages)
     const [recording, setRecording] = useState(false)
     const [speaking, setSpeaking] = useState(true)
+    const [result, setResult] = useState('');
+
+
     const speechStartHandler = e=>{
         console.log("Speech started")
     }
+
     const speechEndHandler = e=>{
         setRecording(false)
         console.log("Speech Ended")
     }
+
     const speechResultHandler = e=>{
         console.log("Speech Event:", e)
+        const text = e.value[0];
+        setResult(text);
     }
     const speechErrorHandler = e=>{
         console.log("Speech error:", e)
     }
 
-    const startRecording = async () =>{
-        setRecording(true)
-        try{
-            await Voice.start('en-US')
-        } catch(e){
-            console.log("Error:", e)
+    // const startRecording = async () =>{
+    //     setRecording(true);
+    //     if (!Voice) {
+    //         try {
+    //             await Voice.start('en-US');
+    //         } catch (e) {
+    //             console.log("Error:", e);
+    //         }
+    //     } else {
+    //         console.error('Voice is null');
+    //     }
+        
+    // }
+
+
+    const startRecording = async () => {
+        setRecording(true);
+        if (!Voice) {
+            console.error('Voice is null');
+            return;
+        }
+        try {
+            await Voice.start('en-US');
+        } catch (e) {
+            console.error("Error:", e);
         }
     }
 
@@ -54,9 +80,7 @@ const HomeScreen = () => {
         Voice.onSpeechEnd = speechEndHandler;
         Voice.onSpeechResults = speechResultHandler;
         Voice.onSpeechError = speechErrorHandler;
-        return() =>{
-            Voice.destroy().then(Voice.removeAllListeners)
-        }
+        
     },[])
 
   return (
